@@ -1,12 +1,12 @@
 import React from 'react';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import boardShape from '../../helpers/propz/boardShape';
 
 class Board extends React.Component {
   static propTypes = {
     board: boardShape.boardShape,
-    setSingleBoard: propTypes.func,
+    setSingleBoard: PropTypes.func,
   }
 
   setSelectedBoardId = (e) => {
