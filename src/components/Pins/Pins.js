@@ -1,7 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+import pinShape from '../../helpers/propz/pinShape';
 
 class Pins extends React.Component {
+  static propTypes = {
+    pin: pinShape.pinShape,
+  }
+
   render() {
+    const { pin } = this.props;
+
     return (
       <div className="Pin col-3">
         <div className="card">
