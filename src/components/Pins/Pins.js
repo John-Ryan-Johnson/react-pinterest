@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 import pinShape from '../../helpers/propz/pinShape';
 
 class Pins extends React.Component {
