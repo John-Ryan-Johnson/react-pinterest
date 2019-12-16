@@ -6,4 +6,5 @@ const boardShape = PropTypes.shape({
   uid: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
 });
+
 export default { boardShape };
