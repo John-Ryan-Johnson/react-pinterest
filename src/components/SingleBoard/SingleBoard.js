@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import boardsData from "../../helpers/data/boardsData";
-import pinsData from "../../helpers/data/pinsData";
-import Pins from "../Pins/Pins";
+import boardData from "../../helpers/data/boardData";
+import pinData from "../../helpers/data/pinData";
+
+import Pin from "../Pin/Pin";
 
 class SingleBoard extends React.Component {
   static propTypes = {
@@ -16,21 +17,37 @@ class SingleBoard extends React.Component {
     pins: []
   };
 
+  getPinData = selectedBoardId => {
+    pinData
+      .getPinsByBoardId(selectedBoardId)
+      .then(pins => {
+        this.setState({ pins });
+      })
+      .catch(errorFromGetPins => console.error({ errorFromGetPins }));
+  };
+
   componentDidMount() {
     const { selectedBoardId } = this.props;
-    boardsData
-      .getSingleBoard(selectedBoardId)
+    boardData.getSingleBoard(selectedBoardId)
       .then(request => {
         this.setState({ board: request.data });
-        pinsData
-          .getPinsByBoardId(selectedBoardId)
-          .then(pins => {
-            this.setState({ pins });
-          })
-          .catch(error => console.error(error));
+        this.getPinData(selectedBoardId);
       })
-      .catch(errorFromGetSingleBoard => console.error(errorFromGetSingleBoard));
+      .catch(errorFromGetSingleBoard =>
+        console.error({ errorFromGetSingleBoard })
+      );
   }
+
+  deleteSinglePin = pinId => {
+    const { selectedBoardId } = this.props;
+
+    pinData
+      .deletePin(pinId)
+      .then(() => {
+        this.getPinData(selectedBoardId);
+      })
+      .catch(errorFromDeletePin => console.error({ errorFromDeletePin }));
+  };
 
   removeSelectedBoardId = e => {
     e.preventDefault();
@@ -49,7 +66,13 @@ class SingleBoard extends React.Component {
           <h2>{board.name}</h2>
           <p>{board.description}</p>
           <div className='d-flex flex-wrap'>
-            {pins.map(pin => <Pins pin={pin} />)}
+            {pins.map(pin => (
+              <Pin
+                key={pin.id}
+                pin={pin}
+                deleteSinglePin={this.deleteSinglePin}
+              />
+            ))}
           </div>
         </div>
       </div>

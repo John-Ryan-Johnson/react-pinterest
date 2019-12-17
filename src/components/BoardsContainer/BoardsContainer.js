@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Board from '../Board/Board';
 
 import authData from '../../helpers/data/authData';
-import boardsData from '../../helpers/data/boardsData';
+import boardsData from '../../helpers/data/boardData';
 
 
 class BoardsContainer extends React.Component {
