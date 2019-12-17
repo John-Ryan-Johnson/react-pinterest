@@ -46,7 +46,7 @@ class BoardForm extends React.Component {
             className='form-control'
             id='board-name'
             placeholder='Enter board name'
-            value={this .state.boardName}
+            value={this.state.boardName}
             onChange={this.nameChange}
           />
         </div>

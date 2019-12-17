@@ -1,10 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import boardData from '../../helpers/data/boardData';
-import pinData from '../../helpers/data/pinData';
+import boardData from "../../helpers/data/boardData";
+import pinData from "../../helpers/data/pinData";
 
-import Pin from '../Pin/Pin';
+import Pin from "../Pin/Pin";
+import PinForm from "../PinForm/PinForm";
 
 class SingleBoard extends React.Component {
   static propTypes = {
@@ -17,6 +18,19 @@ class SingleBoard extends React.Component {
     pins: []
   };
 
+  componentDidMount() {
+    const { selectedBoardId } = this.props;
+    boardData
+      .getSingleBoard(selectedBoardId)
+      .then(request => {
+        this.setState({ board: request.data });
+        this.getPinData(selectedBoardId);
+      })
+      .catch(errorFromGetSingleBoard =>
+        console.error({ errorFromGetSingleBoard })
+      );
+  }
+
   getPinData = selectedBoardId => {
     pinData
       .getPinsByBoardId(selectedBoardId)
@@ -26,17 +40,14 @@ class SingleBoard extends React.Component {
       .catch(errorFromGetPins => console.error({ errorFromGetPins }));
   };
 
-  componentDidMount() {
-    const { selectedBoardId } = this.props;
-    boardData.getSingleBoard(selectedBoardId)
-      .then(request => {
-        this.setState({ board: request.data });
-        this.getPinData(selectedBoardId);
+  savePinData = newPin => {
+    pinData
+      .savePin(newPin)
+      .then(() => {
+        this.getPinData(this.props.selectedBoardId);
       })
-      .catch(errorFromGetSingleBoard =>
-        console.error({ errorFromGetSingleBoard })
-      );
-  }
+      .catch(errorFromSavePin => console.error({ errorFromSavePin }));
+  };
 
   deleteSinglePin = pinId => {
     const { selectedBoardId } = this.props;
@@ -57,6 +68,8 @@ class SingleBoard extends React.Component {
 
   render() {
     const { board, pins } = this.state;
+    const { selectedBoardId } = this.props;
+
     return (
       <div>
         <button className='btn btn-info' onClick={this.removeSelectedBoardId}>
@@ -65,6 +78,10 @@ class SingleBoard extends React.Component {
         <div className='SingleBoard col-8 offset-2'>
           <h2>{board.name}</h2>
           <p>{board.description}</p>
+          <PinForm
+            savePin={this.savePinData}
+            selectedBoardId={selectedBoardId}
+          />
           <div className='d-flex flex-wrap'>
             {pins.map(pin => (
               <Pin

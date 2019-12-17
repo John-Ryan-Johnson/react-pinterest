@@ -24,8 +24,10 @@ const getPinsByBoardId = boardId =>
       });
   });
 
+const savePin = (pinInfo) => axios.post(`${baseUrl}/pins.json`, pinInfo); 
+
 const getSinglePin = pinId => axios.get(`${baseUrl}/pins/${pinId}.json`);
 
 const deletePin = pinId => axios.delete(`${baseUrl}/pins/${pinId}.json`);
 
-export default { getPinsByBoardId, getSinglePin, deletePin };
+export default { getPinsByBoardId, getSinglePin, deletePin, savePin };
