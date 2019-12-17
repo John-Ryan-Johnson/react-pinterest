@@ -1,10 +1,10 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import boardData from "../../helpers/data/boardData";
-import pinData from "../../helpers/data/pinData";
+import boardData from '../../helpers/data/boardData';
+import pinData from '../../helpers/data/pinData';
 
-import Pin from "../Pin/Pin";
+import Pin from '../Pin/Pin';
 
 class SingleBoard extends React.Component {
   static propTypes = {
